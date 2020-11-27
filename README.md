@@ -23,6 +23,7 @@ Para la construcción se hizo un procedimiento similar al preprocesamiento. Se r
 En cuanto al manejo de memoría secundaria, se carga el indice invertido a archivos en caso no exista ningún archivo .json, caso contrario se procede a leer el archivo y obtener el indice invertido. Cabe resaltar que el formato utilizado para el manejo de archivo es de tipo json.
 
 #### Consultas
+Para la parte de consultas, se tokenizó el query para de esta manera hacer una mejor búsqueda. Luego se calcula los **tfIdf** tanto del query como del índice, una vez se hace el calculo se procede a calcular el score con el coseno.
 
 ### Frontend
 - Uso
