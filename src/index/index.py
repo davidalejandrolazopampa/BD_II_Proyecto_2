@@ -68,5 +68,3 @@ def buildIndex():
         write(INDEX_PATH, invertedIndex)
 
     return invertedIndex
-
-
