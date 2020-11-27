@@ -4,6 +4,7 @@ from nltk.stem import SnowballStemmer
 import math
 
 import preprocessing
+import index
 from index import buildIndex
 
 stemmer = SnowballStemmer('spanish')
@@ -36,7 +37,7 @@ def getSqrtInput(tfIdf):
     for word in tfIdf:
         total += tfIdf[word] ** 2
 
-    return math.sqrt(total)
+    return (total ** 0.5)
 
 def getTfIdfIndex(query):
     result = {}
@@ -59,7 +60,7 @@ def getSqrtIndex(tfIdf):
         for word in tfIdf[dataId]:
             total += tfIdf[dataId][word] ** 2
 
-        result[dataId] = math.sqrt(total)
+        result[dataId] = (total ** 0.5)
 
     return result
 
@@ -67,9 +68,28 @@ def cosScore(tfIdfInput, tfIdfIndex):
     sqrtInput = getSqrtInput(tfIdfInput)
     sqrtIndex = getSqrtIndex(tfIdfIndex)
 
+    score = {}
 
-def query(inputText):
+    for dataId in tfIdfIndex:
+        product = 0
+        sqrtTotal = sqrtInput * sqrtIndex[dataId]
+        for word in tfIdfIndex[dataId]:
+            product += tfIdfIndex[dataId][word] * tfIdfInput[word]
+
+        score[dataId] = product / sqrtTotal
+
+    score = {k: v for k, v in sorted(score.items(), key=lambda item: item[1])}
+
+    return score
+
+
+def query(inputText, k):
     inputText = preprocessingQuery(inputText)
     tfIdfInput = getTfIdfInput(inputText)
     tfIdfIndex = getTfIdfIndex(inputText)
     cos = cosScore(tfIdfInput, tfIdfIndex)
+
+    if k < len(cos):
+        return cos[ : k]
+    else:
+        return cos
