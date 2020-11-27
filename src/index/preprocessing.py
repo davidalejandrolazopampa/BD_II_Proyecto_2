@@ -13,7 +13,7 @@ def getStopWords(stopListPath = '../files/stopList.txt'):
     for line in stopFile:
         stopWords.append(line)
 
-    stopWords += ['(', ')', '=', '+', '-', '|', '#', 'x', '/', '@', '?', '.',',', ';', '«', ':', '¿', '!', '¡', '<', '>', '😆', '👍', '_', '...', '👍🏻', '🏡', '”', '“', 'de', 'es', 'un', 'a']
+    stopWords += ['(', ')', '=', '+', '-', '|', '#', 'x', '/', '@', '?', '.',',', ';', '«', ':', '¿', '!', '¡', '<', '>', '😆', '👍', '_', '...', '👍🏻', '🏡', '”', '“', 'de', 'es', 'un', 'a', '%']
 
     stopFile.close()
 
@@ -23,15 +23,14 @@ def preprocessing(dataPath = '../../data/'):
     dataList = os.listdir(dataPath)
     stopWords = getStopWords()
 
+    result = []
+
     for dataFile in dataList:
         data = open(dataPath + dataFile, 'r')
         tweets = json.load(data)
 
-        result = {}
-
         for tweet in tweets:
             if tweet['retweeted'] is False:
-                dataId = tweet['id']
                 text = tweet['text'].lower()
 
                 text = nltk.word_tokenize(text)
@@ -40,14 +39,10 @@ def preprocessing(dataPath = '../../data/'):
                 for word in text:
                     if word not in stopWords:
                         temp = stemmer.stem(word)
-                        cleanText.append(temp)
+                        result.append(temp)
 
-                result[dataId] = cleanText
-                # print(dataId, result[dataId])
+        data.close()
 
-    dataList.close()
-                
-    return result
+    return set(result)
 
-
-print(preprocessing())
+# print(preprocessing('../../example/'))
