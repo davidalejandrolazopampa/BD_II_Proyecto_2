@@ -30,6 +30,7 @@ def generateInvertedIndex():
     dataList = os.listdir(DATA_PATH)
 
     invertedIndex = {}
+    totalTweets = 0
 
     for word in processedWords:
         invertedIndex[word] = [0, {}] # df, {id: tf}
@@ -54,11 +55,11 @@ def generateInvertedIndex():
                             invertedIndex[temp][1][dataId] = 1
                         else:
                             invertedIndex[temp][1][dataId] += 1
-
+            totalTweets++
 
         data.close()
 
-    return invertedIndex
+    return [invertedIndex, totalTweets]
 
 def buildIndex():
     if path.exists(INDEX_PATH):
@@ -68,3 +69,4 @@ def buildIndex():
         write(INDEX_PATH, invertedIndex)
 
     return invertedIndex
+
