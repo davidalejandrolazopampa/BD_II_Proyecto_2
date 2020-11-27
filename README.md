@@ -10,11 +10,17 @@
 ## Implementación
 ### Backend
 #### Preprocesamiento
-Para esta parte, lo primero que se hizo es obtener los
+Para esta parte, lo primero que se hizo es obtener los __stops words__, esto con ayuda de un archivo proporcionado en laboratorios anteriores. Luego se pasó a recorrer el archivo que tiene los tweets en archivos .json; a cada archivo se recorrienron sus tweets y a cada tweet se tokenizó, primero volviéndolo a minúscula y luego con la ayuda de la librería **nltk** se procedió a tokenizar. Por último, cada palabra tokenizada se comprobó que no estuviera en la lista de **stop words** y se les aplicó la reducción de palabras para de esta manera obtener su raíz. La función retorna una lista de todas las palabras usadas en los tweets ya tokenizadas.
   
-#### Indice invertido: Construcción
+#### Indice invertido
+Para la construcción se hizo un procedimiento similar al preprocesamiento. Se recorrieron los archivos que tienen la data y se procedieron a tokenizar, una vez se tenía las palabras tokenizadas se procedió a construir el índice invertido, teniendo como atributos: 
+- Palabra tokenizada
+- Id del tweet
+- Document frequency
+- Collection frequency
 
 #### Memoria secundaria
+En cuanto al manejo de memoría secundaria, se carga el indice invertido a archivos en caso no exista ningún archivo .json, caso contrario se procede a leer el archivo y obtener el indice invertido. Cabe resaltar que el formato utilizado para el manejo de archivo es de tipo json.
 
 #### Consultas
 
