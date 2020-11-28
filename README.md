@@ -27,8 +27,11 @@ Para la parte de consultas, se tokenizó el query para de esta manera hacer una 
 
 ### Web
 Para la parte web se usó la librería Flask de Python, tiene dos archivos: 1 index.html y 1 retrieval.html. En el archivo index se pide al usuario que ingrese los keywords y el rango que se desea obtener los resultados.
+
 ![Index](./rmd_img/index.png)
+
 Y por último, al ingresar los datos, el programa retorna un conjunto de tweets, los cuales presentan una mayor similitud con los keywords ingresados.
+
 ![Index](./rmd_img/retrieval.png)
 
 ### Testing
