@@ -3,30 +3,31 @@ from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 import math
 
-import preprocessing
-import index
 from index import buildIndex
 
 stemmer = SnowballStemmer('spanish')
-[invertedIndex, totalTweets] = buildIndex()
 
 def preprocessingQuery(inputText):
     inputText = inputText.lower()
     inputText = nltk.word_tokenize(inputText)
-    result = stemmer.stem(inputText)
+
+    result = []
+
+    for i in inputText:
+        result.append(stemmer.stem(i))
 
     return result
 
-def tf_idf(tf, df):
+def tf_idf(tf, df, totalTweets):
     return math.log(1 + tf, 10) * math.log(totalTweets / df, 10)
 
-def getTfIdfInput(query, isInput):
+def getTfIdfInput(query, invertedIndex, totalTweets):
     result = {}
 
     for word in query:
         if word in invertedIndex:
-            df = invertedIndex[term][0]
-            tfIdf = tf_idf(1, df)
+            df = invertedIndex[word][0]
+            tfIdf = tf_idf(1, df, totalTweets)
             result[word] = tfIdf
 
     return result
@@ -39,15 +40,19 @@ def getSqrtInput(tfIdf):
 
     return (total ** 0.5)
 
-def getTfIdfIndex(query):
+def getTfIdfIndex(query, invertedIndex, totalTweets):
     result = {}
 
     for word in query:
         for dataId in invertedIndex[word][1]:
             tf = invertedIndex[word][1][dataId]
             df = invertedIndex[word][0]
-            tfIdf = tf_idf(tf, df)
+            tfIdf = tf_idf(tf, df, totalTweets)
             # {tweetId: {word: tfIdf}}
+
+            if dataId not in result:
+                result[dataId] = {}
+
             result[dataId][word] = tfIdf
 
     return result
@@ -83,13 +88,17 @@ def cosScore(tfIdfInput, tfIdfIndex):
     return score
 
 
-def query(inputText, k):
+def query(inputText, k, invertedIndex, totalTweets):
     inputText = preprocessingQuery(inputText)
-    tfIdfInput = getTfIdfInput(inputText)
-    tfIdfIndex = getTfIdfIndex(inputText)
+    tfIdfInput = getTfIdfInput(inputText, invertedIndex, totalTweets)
+    tfIdfIndex = getTfIdfIndex(inputText, invertedIndex, totalTweets)
     cos = cosScore(tfIdfInput, tfIdfIndex)
 
+    dict_items = cos.items()
+
     if k < len(cos):
-        return cos[ : k]
+        kElem = list(dict_items)[:k]
+        return kElem
     else:
-        return cos
+        kElem = list(dict_items)[:]
+        return kElem

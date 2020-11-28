@@ -19,7 +19,7 @@ def getStopWords(stopListPath = '../files/stopList.txt'):
 
     return stopWords
 
-def preprocessing(dataPath = '../../data/'):
+def preprocessing(dataPath = '../data/'):
     dataList = os.listdir(dataPath)
     stopWords = getStopWords()
 

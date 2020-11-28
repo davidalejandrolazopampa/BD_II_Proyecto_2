@@ -11,9 +11,6 @@ stemmer = SnowballStemmer('spanish')
 def readIndexFile(path):
     with open(path) as f:
         invertedIndex = json.load(f)
-    # indexFile = open(path, 'r')
-    # invertedIndex = json.load(indexFile)
-    # indexFile.close()
 
     return invertedIndex
 
@@ -56,12 +53,13 @@ def generateInvertedIndex(dataPath):
 
         data.close()
 
-    return invertedIndex
+    return invertedIndex, allTweets
 
-def getTotalTweets(dataPath):
+def getInfo(dataPath):
     dataList = os.listdir(dataPath)
 
     totalTweets = 0
+    allTweets = {}
 
     for dataFile in dataList:
         data = open(dataPath + dataFile, 'r')
@@ -69,19 +67,23 @@ def getTotalTweets(dataPath):
 
         for tweet in tweets:
             if tweet['retweeted'] is False:
+                dataId = tweet['id']
+                text = tweet['text'].lower()
                 totalTweets += 1
+
+                allTweets[dataId] = text
 
         data.close()
     
-    return totalTweets
+    return [totalTweets, allTweets]
 
-def buildIndex():
-    indexPath = '../files/invertedIndex.json'
-    dataPath = '../../example/'
+def buildIndex(indexPath, dataPath):
     if path.exists(indexPath) == True:
         invertedIndex = readIndexFile(indexPath)
     else:
+        
         invertedIndex = generateInvertedIndex(dataPath)
         writeIndexFile(indexPath, invertedIndex)
 
-    return [invertedIndex, getTotalTweets(dataPath)]
+    info = getInfo(dataPath)
+    return [invertedIndex, info[0], info[1]]
