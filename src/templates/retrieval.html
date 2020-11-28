@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Etiquetas <meta> obligatorias para Bootstrap -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Enlazando el CSS de Bootstrap -->
+  <link rel="stylesheet" href={{ url_for('static', filename= 'css/style.css') }}>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <title>Proyecto-2-BDII</title>
+</head>
+<body>
+<div class="col-md-4 mx-auto">
+  <div class="row">
+  {% set count = namespace(value = 1)%}
+  {% for tweet in tweets %}
+      <div class="card ml-2" style="width: 18rem;">
+        <img src="{{ url_for('static', filename='img/logo_twitter.png') }}" class="card-img-top" alt="logo">
+        <div class="card-body">
+          <p>{{ count.value }}</p>
+          <h5 class="card-title">{{ tweet }}</h5>
+          <p class="card-text">{{ tweets[tweet] }}</p>
+        </div>
+      </div>
+  {% set count.value = count.value + 1 %}
+  {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>

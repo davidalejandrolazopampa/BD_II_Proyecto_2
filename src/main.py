@@ -1,27 +1,30 @@
+from flask import Flask,render_template, request, session, Response, redirect
 from query import query
 from index import buildIndex
 
 indexPath = '../files/invertedIndex.json'
 dataPath = '../example/'
 
+app = Flask(__name__)
+
 [invertedIndex, totalTweets, allTweets] = buildIndex(indexPath, dataPath)
 
-inputText = str(input("Ingrese keywords: "))
-k = int(input("Ingrese cantidad de tweets a recuperar: "))
+@app.route('/')
+def index():
+    return render_template("index.html")
 
-result = query(inputText, k, invertedIndex, totalTweets)
+@app.route("/retrieval")
+def retrieval():
+    textInput = request.args.get("query")
+    k = request.args.get("range")
+    retrievalResult = {}
 
-count = 1
-for i in result:
-    print('[', count, '] ➥', i)
-    count += 1
+    tweets = query(textInput, int(k), invertedIndex, totalTweets)
+    for tweet in tweets:
+        retrievalResult[tweet[0]] = allTweets[int(tweet[0])]
 
-print()
-lookFor = int(input('¿Que tweet desea visualizar? '))
+    return render_template("retrieval.html", tweets = retrievalResult)
 
-while lookFor >= count:
-    print('Indice invalido')
-    lookFor = int(input('¿Que tweet desea visualizar?'))
-
-print()
-print(allTweets[int(result[lookFor - 1][0])])
+if __name__ == "__main__":
+    app.secret_key = ".."
+    app.run(port=5000, threaded=True, host=('127.0.0.1'))
