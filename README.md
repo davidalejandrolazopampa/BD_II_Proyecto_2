@@ -34,6 +34,5 @@ Y por último, al ingresar los datos, el programa retorna un conjunto de tweets,
 
 ![Index](./rmd_img/retrieval.png)
 
-### Testing
 ## VIDEO
 ### [Video-Drive](https://drive.google.com/drive/folders/1vZ7tdqb6LJqwmy5G427KBPlN7ooUIkd9?usp=sharing)
