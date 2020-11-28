@@ -25,11 +25,12 @@ En cuanto al manejo de memoría secundaria, se carga el indice invertido a archi
 #### Consultas
 Para la parte de consultas, se tokenizó el query para de esta manera hacer una mejor búsqueda. Luego se calcula los **tfIdf** tanto del query como del índice, una vez se hace el calculo se procede a calcular el score con el coseno.
 
-### Frontend
-- Uso
-- Recuperación de Tweets
+### Web
+Para la parte web se usó la librería Flask de Python, tiene dos archivos: 1 index.html y 1 retrieval.html. En el archivo index se pide al usuario que ingrese los keywords y el rango que se desea obtener los resultados.
+![Index](./rmd_img/index.png)
+Y por último, al ingresar los datos, el programa retorna un conjunto de tweets, los cuales presentan una mayor similitud con los keywords ingresados.
+![Index](./rmd_img/retrieval.png)
 
 ### Testing
 ## VIDEO
 ### [Video-Drive](https://drive.google.com/drive/folders/1vZ7tdqb6LJqwmy5G427KBPlN7ooUIkd9?usp=sharing)
-### [Video-Youtube]()
